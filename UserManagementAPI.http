@@ -1,0 +1,60 @@
+@UserManagementAPI_HostAddress = http://localhost:5225
+@ContentType = application/json
+
+### Get all users (with pagination)
+GET {{UserManagementAPI_HostAddress}}/api/users?pageNumber=1&pageSize=10
+Accept: {{ContentType}}
+
+### Get user by ID
+GET {{UserManagementAPI_HostAddress}}/api/users/1
+Accept: {{ContentType}}
+
+### Create a new user
+POST {{UserManagementAPI_HostAddress}}/api/users
+Content-Type: {{ContentType}}
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "dateOfBirth": "1990-05-15"
+}
+HTTP Response: 201 | Elapsed: 5ms | Content-Type: application/json
+Response Body: {"id":"a1b2c3d4...","firstName":"John","lastName":"Doe",...}
+
+### Create user with invalid age (too young - should fail)
+POST {{UserManagementAPI_HostAddress}}/api/users
+Content-Type: {{ContentType}}
+
+{
+  "firstName": "Young",
+  "lastName": "User",
+  "email": "young@example.com",
+  "dateOfBirth": "2015-01-01"
+}
+
+### Create user with invalid email (should fail)
+POST {{UserManagementAPI_HostAddress}}/api/users
+Content-Type: {{ContentType}}
+
+{
+  "firstName": "Invalid",
+  "lastName": "Email",
+  "email": "not-an-email",
+  "dateOfBirth": "1990-05-15"
+}
+
+### Update a user (replace ID with actual user ID)
+PUT {{UserManagementAPI_HostAddress}}/api/users/00000000-0000-0000-0000-000000000000
+Content-Type: {{ContentType}}
+
+{
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "email": "jane.smith@example.com",
+  "dateOfBirth": "1992-03-20"
+}
+
+### Delete a user (replace ID with actual user ID)
+DELETE {{UserManagementAPI_HostAddress}}/api/users/00000000-0000-0000-0000-000000000000
+Accept: {{ContentType}}
